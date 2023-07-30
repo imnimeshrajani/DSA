@@ -1,3 +1,5 @@
+import jdk.jshell.execution.Util;
+
 import java.util.Scanner;
 
 public class Main {
@@ -21,23 +23,6 @@ public class Main {
 
 //        int[] array = main.negativePositiveNumberArray();
 //        main.printArray(array);
-
-        Solution solution = new Solution();
-        int[] array = main.intArrayFromUser();
-//        System.out.println("Enter a Target");
-//        int target = scanner.nextInt();
-//        main.printArray(solution.twoSum(array, target));
-//        System.out.println(solution.removeDuplicates(array));
-//        System.out.println("ans:" + solution.removeElement(array,target));
-        //System.out.println(target);
-//        System.out.println("ans:" + solution.searchInsert(array,target));
-        main.printArray(solution.plusOne(array));
-    }
-
-    void printArray(int[] array) {
-        for (int i = 0; i < array.length; i++) {
-            System.out.println(array[i]);
-        }
     }
 
     void arrayExample(){
@@ -63,17 +48,7 @@ public class Main {
         return -1;
     }
 
-    int[] intArrayFromUser(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter Array Length");
-        int arrayLength = scanner.nextInt();
-        System.out.println("Enter Array Value");
-        int[] intArray = new int[arrayLength];
-        for (int i = 0; i < arrayLength; i++) {
-            intArray[i] = scanner.nextInt();
-        }
-        return intArray;
-    }
+
 
     int repeatValueArray(){
         int[] arrayInt = {1,4,6,8,2,5,8,9,4,5,2,4};
@@ -86,7 +61,7 @@ public class Main {
         return repeated;
     }
     int findUniqueValue(){
-        int[] array = intArrayFromUser();
+        int[] array = Utils.intArrayFromUser();
         for (int i = 0; i < array.length; i++) {
             for (int j = i+1; j < array.length; j++) {
                 if (array[i] == array[j]){
@@ -104,7 +79,7 @@ public class Main {
     }
 
     String findDifferenceValue(){
-        int[] array = intArrayFromUser();
+        int[] array = Utils.intArrayFromUser();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter difference Number: ");
         int diff = scanner.nextInt();
@@ -119,7 +94,7 @@ public class Main {
     }
 
     int[] rotateArrayFromGivenValue(){
-        int[] array = intArrayFromUser();
+        int[] array = Utils.intArrayFromUser();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Position For Swap: ");
         int position = scanner.nextInt();

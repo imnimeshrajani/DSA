@@ -1,5 +1,25 @@
+import java.util.Scanner;
+
 class Solution {
 
+
+    public static void main(String args[]){
+        Solution solution = new Solution();
+        Scanner scanner = new Scanner(System.in);
+        int[] array = Utils.intArrayFromUser();
+//        System.out.println("Enter a Target");
+//        int target = scanner.nextInt();
+//        main.printArray(solution.twoSum(array, target));
+//        System.out.println(solution.removeDuplicates(array));
+//        System.out.println("ans:" + solution.searchInsert(array,target));
+//        main.printArray(solution.plusOne(array));
+        System.out.println("Enter a Sorted array length");
+        int m = scanner.nextInt();
+        int[] nums2 = Utils.intArrayFromUser();
+
+        Utils.printArray(solution.merge(array,m,nums2, nums2.length));
+
+    }
     // TODO: WRITE ALL LEET CODE SOLUTIONS HERE
     public int[] twoSum(int[] nums, int target) {
         int[] arr = new int[2];
@@ -24,7 +44,7 @@ class Solution {
             }
         }
         Main main = new Main();
-        main.printArray(nums);
+        Utils.printArray(nums);
         return j;
     }
 
@@ -37,7 +57,7 @@ class Solution {
             }
         }
         Main main = new Main();
-        main.printArray(nums);
+        Utils.printArray(nums);
         return j;
     }
 
@@ -64,5 +84,19 @@ class Solution {
         digits = new int[digits.length+1];
         digits[0] = 1;
         return digits;
+    }
+
+    public int[] merge(int[] nums1, int m, int[] nums2, int n) {
+        int j = nums1.length-1;
+        m -= 1;
+        n -= 1;
+       while (j>=0){
+            if (m>=0 && nums1[m]>nums2[n]){
+                nums1[j--] = nums1[m--];
+            } else {
+                nums1[j--] = nums2[n--];
+            }
+        }
+        return nums1;
     }
 }
