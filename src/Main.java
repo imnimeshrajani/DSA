@@ -22,10 +22,9 @@ public class Main {
 //        int[] array = main.negativePositiveNumberArray();
 //        main.printArray(array);
 
-        System.out.println("First Matrix Value: ");
-        int[][] firstArray = Utils.get2dArray();
+//        System.out.println("First Matrix Value: ");
+//        int[][] firstArray = Utils.get2dArray();
 //        main.reverseMatrixColumn(firstArray);
-        main.rotationMatrixAntiClockWise(firstArray);
         /*System.out.println("Second Matrix Value: ");
         int[][] secArray = Utils.get2dArray();
         main.matrixSum(
@@ -36,6 +35,9 @@ public class Main {
                 firstArray, firstArray.length, firstArray[firstArray.length - 1].length,
                 secArray, secArray.length, secArray[secArray.length - 1].length
         );*/
+//        main.rotationMatrixAntiClockWise(firstArray);
+        System.out.println("Enter pascal raw size: ");
+        main.pascal(scanner.nextInt());
     }
 
     void arrayExample() {
@@ -191,7 +193,6 @@ public class Main {
         Utils.print2dArray(array);
     }
 
-
     void transposeMatrix(int[][] array){
         for (int i = 0; i < array.length; i++) {
             for (int j = i; j < array[i].length; j++) {
@@ -238,5 +239,17 @@ public class Main {
             }
         }
         Utils.print2dArray(array);
+    }
+
+    void pascal(int raw){
+        int[][] pascalArray = new int[raw][];
+        for (int i = 0; i < raw; i++) {
+            pascalArray[i] = new int[i+1];
+            pascalArray[i][0] = pascalArray[i][i] = 1;
+            for (int j = 1; j < i; j++) {
+                pascalArray[i][j] = pascalArray[i-1][j] + pascalArray[i-1][j-1];
+            }
+        }
+        Utils.print2dArray(pascalArray);
     }
 }
