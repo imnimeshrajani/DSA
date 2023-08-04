@@ -36,8 +36,29 @@ public class Main {
                 secArray, secArray.length, secArray[secArray.length - 1].length
         );*/
 //        main.rotationMatrixAntiClockWise(firstArray);
-        System.out.println("Enter pascal raw size: ");
-        main.pascal(scanner.nextInt());
+//        System.out.println("Enter pascal raw size: ");
+//        main.pascal(scanner.nextInt());
+
+        System.out.println("Enter Raw & Column Size: ");
+        int row = scanner.nextInt();
+        int column = scanner.nextInt();
+
+        int[][] array = new int[row][column];
+        System.out.println("Enter Your Values: ");
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                array[i][j] = scanner.nextInt();
+            }
+        }
+
+        System.out.println("Enter r1 c1 & r2 c2: ");
+        int r1 = scanner.nextInt();
+        int c1 = scanner.nextInt();
+        int r2 = scanner.nextInt();
+        int c2 = scanner.nextInt();
+//        main.spiralMatrixPrint(array, row, column);
+//        main.spiralMatrixCreate(row, row);
+        main.getSumWithPrefixSumMatrix(array, c1, c2, r1, r2);
     }
 
     void arrayExample() {
@@ -164,8 +185,8 @@ public class Main {
         Utils.print2dArray(sumArray);
     }
 
-    void matrixMultiplication(int[][] firstArray, int r1, int c1, int[][] secArray, int r2, int c2){
-        if (r2!=c1){
+    void matrixMultiplication(int[][] firstArray, int r1, int c1, int[][] secArray, int r2, int c2) {
+        if (r2 != c1) {
             System.out.println("Wrong Input - Multiplication not possible");
             return;
         }
@@ -180,11 +201,11 @@ public class Main {
         Utils.print2dArray(multiArray);
     }
 
-    void reverseMatrixColumn(int[][] array){
+    void reverseMatrixColumn(int[][] array) {
         for (int i = 0; i < array.length; i++) {
-            int arrayLastPosition = array[i].length-1;
+            int arrayLastPosition = array[i].length - 1;
             for (int j = 0; j < arrayLastPosition; j++) {
-                array[i][j] = array[i][j]+ array[i][arrayLastPosition];
+                array[i][j] = array[i][j] + array[i][arrayLastPosition];
                 array[i][arrayLastPosition] = array[i][j] - array[i][arrayLastPosition];
                 array[i][j] = array[i][j] - array[i][arrayLastPosition];
                 arrayLastPosition--;
@@ -193,7 +214,7 @@ public class Main {
         Utils.print2dArray(array);
     }
 
-    void transposeMatrix(int[][] array){
+    void transposeMatrix(int[][] array) {
         for (int i = 0; i < array.length; i++) {
             for (int j = i; j < array[i].length; j++) {
                 int temp = array[i][j];
@@ -203,16 +224,17 @@ public class Main {
         }
         Utils.print2dArray(array);
     }
-    void rotationMatrixClockWise(int[][] array){
+
+    void rotationMatrixClockWise(int[][] array) {
         for (int i = 0; i < array.length; i++) {
             for (int j = i; j < array[i].length; j++) {
                 int temp = array[i][j];
                 array[i][j] = array[j][i];
                 array[j][i] = temp;
             }
-            int arrayLastPosition = array[i].length-1;
+            int arrayLastPosition = array[i].length - 1;
             for (int j = 0; j < arrayLastPosition; j++) {
-                array[i][j] = array[i][j]+ array[i][arrayLastPosition];
+                array[i][j] = array[i][j] + array[i][arrayLastPosition];
                 array[i][arrayLastPosition] = array[i][j] - array[i][arrayLastPosition];
                 array[i][j] = array[i][j] - array[i][arrayLastPosition];
                 arrayLastPosition--;
@@ -221,7 +243,7 @@ public class Main {
         Utils.print2dArray(array);
     }
 
-    void rotationMatrixAntiClockWise(int[][] array){
+    void rotationMatrixAntiClockWise(int[][] array) {
         for (int i = 0; i < array.length; i++) {
             int arrayLastPosition = array[i].length - 1;
             for (int j = 0; j < arrayLastPosition; j++) {
@@ -241,15 +263,146 @@ public class Main {
         Utils.print2dArray(array);
     }
 
-    void pascal(int raw){
+    void pascal(int raw) {
         int[][] pascalArray = new int[raw][];
         for (int i = 0; i < raw; i++) {
-            pascalArray[i] = new int[i+1];
+            pascalArray[i] = new int[i + 1];
             pascalArray[i][0] = pascalArray[i][i] = 1;
             for (int j = 1; j < i; j++) {
-                pascalArray[i][j] = pascalArray[i-1][j] + pascalArray[i-1][j-1];
+                pascalArray[i][j] = pascalArray[i - 1][j] + pascalArray[i - 1][j - 1];
             }
         }
         Utils.print2dArray(pascalArray);
+    }
+
+    /*void spiralMatrixPrint(int[][] matrix, int r, int c) {
+
+        int topRow = 0;
+        int bottomRow = r - 1;
+        int leftCol = 0;
+        int rightCol = c - 1;
+
+        while (topRow <= bottomRow ) {
+            // top raw
+            for (int i = leftCol; i <= rightCol && topRow <= bottomRow; i++) {
+                System.out.print(matrix[topRow][i] + " ");
+            }
+            topRow++;
+
+            // right column
+            for (int i = topRow; i <= bottomRow && topRow <= bottomRow; i++) {
+                System.out.print(matrix[i][rightCol] + " ");
+            }
+            rightCol--;
+
+            // bottom raw
+            for (int i = rightCol; i >= leftCol && topRow <= bottomRow; i--) {
+                System.out.print(matrix[bottomRow][i] + " ");
+            }
+            bottomRow--;
+
+            // left column
+            for (int i = bottomRow; i >= topRow && topRow <= bottomRow; i--) {
+                System.out.print(matrix[i][leftCol] + " ");
+            }
+            leftCol++;
+
+        }
+    }*/
+
+    void spiralMatrixPrint(int[][] matrix, int r, int c) {
+        int leftCol = 0;
+        int rightCol = r - 1;
+        int topRow = 0;
+        int bottomRow = c - 1;
+
+        while (topRow <= bottomRow) {
+            // top row
+            for (int i = leftCol; i <= rightCol && topRow <= bottomRow; i++) {
+                System.out.print(matrix[topRow][i] + " ");
+            }
+            topRow++;
+
+            // right colum
+            for (int i = topRow; i <= bottomRow && topRow <= bottomRow; i++) {
+                System.out.print(matrix[i][rightCol] + " ");
+            }
+            rightCol--;
+
+            // bottom row
+            for (int i = rightCol; i >= leftCol && topRow <= bottomRow; i--) {
+                System.out.print(matrix[bottomRow][i] + " ");
+            }
+            bottomRow--;
+            // left column
+            for (int i = bottomRow; i >= topRow && topRow <= bottomRow; i--) {
+                System.out.print(matrix[i][leftCol] + " ");
+            }
+            leftCol++;
+        }
+    }
+
+    void spiralMatrixCreate(int r, int c) {
+        int leftCol = 0;
+        int rightCol = r - 1;
+        int topRow = 0;
+        int bottomRow = c - 1;
+        int value = 1;
+        int[][] matrix = new int[r][c];
+
+        while (value < r * c) {
+            // top row
+            for (int i = leftCol; i <= rightCol && value < r * c; i++) {
+                matrix[topRow][i] = value++;
+            }
+            topRow++;
+
+            // right colum
+            for (int i = topRow; i <= bottomRow && value < r * c; i++) {
+                matrix[i][rightCol] = value++;
+            }
+            rightCol--;
+
+            // bottom row
+            for (int i = rightCol; i >= leftCol && value < r * c; i--) {
+                matrix[bottomRow][i] = value++;
+            }
+            bottomRow--;
+            // left column
+            for (int i = bottomRow; i >= topRow && value < r * c; i--) {
+                matrix[i][leftCol] = value++;
+            }
+            leftCol++;
+        }
+        Utils.print2dArray(matrix);
+    }
+
+    void getSumWithPrefixSumMatrix(int[][] matrix, int leftCol, int rightCol, int topRow, int bottomRow) {
+        getPrefixedMatrixRow(matrix);
+        int sum = 0;
+        for (int i = topRow; i <= bottomRow; i++) {
+            if (leftCol > 0) {
+                sum += matrix[i][rightCol] - matrix[i][leftCol - 1];
+            } else {
+                sum += matrix[i][rightCol];
+            }
+        }
+        System.out.println(sum);
+    }
+
+    void getPrefixedMatrixRow(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[i].length; j++) {
+                matrix[i][j] = matrix[i][j] + matrix[i][j - 1];
+            }
+        }
+    }
+
+    void getPrefixedMatrix(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[i].length; j++) {
+                matrix[i][j] = matrix[i][j] + matrix[i][j - 1];
+            }
+        }
     }
 }
