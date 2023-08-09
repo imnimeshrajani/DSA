@@ -78,7 +78,6 @@ public class Main {
                 j = i + 1;
             }
         }
-        Utils.printArray(nums);
     }
 
     void arrayExample() {
