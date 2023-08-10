@@ -6,8 +6,8 @@ class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
         Scanner scanner = new Scanner(System.in);
-        int[] array = Utils.intArrayFromUser();
-        int[] array2 = Utils.intArrayFromUser();
+//        int[] array = Utils.intArrayFromUser();
+//        int[] array2 = Utils.intArrayFromUser();
 //        System.out.println("Enter a Target");
 //        int target = scanner.nextInt();
 //        main.printArray(solution.twoSum(array, target));
@@ -29,7 +29,12 @@ class Solution {
         System.out.println("Enter Range:");
         System.out.println(numArray.sumRange(scanner.nextInt(), scanner.nextInt()));*/
 
-        Utils.printArray(solution.intersect(array,array2));
+//        Utils.printArray(solution.intersect(array,array2));
+        /*System.out.println("Enter Romen Number:");
+        System.out.println(solution.romanToInt(scanner.next()));*/
+
+        System.out.println("Enter Value: ");
+        System.out.println(solution.mySqrt(scanner.nextInt()));
     }
 
     // TODO: WRITE ALL LEET CODE SOLUTIONS HERE
@@ -212,9 +217,7 @@ class Solution {
     }
 
     public int[] intersect(int[] nums1, int[] nums2) {
-        int n1 = nums1.length;
-        int n2 = nums2.length;
-        int i = 0, j = 0, k = 0;
+        int n1 = nums1.length, n2 = nums2.length, i = 0, j = 0, k = 0;
         Arrays.sort(nums1);
         Arrays.sort(nums2);
         while( i < n1 && j < n2)
@@ -228,5 +231,41 @@ class Solution {
             }
         }
         return Arrays.copyOfRange(nums1,0,k);
+    }
+
+    public boolean isPalindrome(int x) {
+        String str = String.valueOf(x);
+        int i = 0, j = str.length()-1;
+        while (i<j) if (str.charAt(i++) != str.charAt(j--)) return false;
+        return true;
+    }
+
+    public int romanToInt(String s) {
+        int ans = 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put('I',1);
+        map.put('V',5);
+        map.put('X',10);
+        map.put('L',50);
+        map.put('C',100);
+        map.put('D',500);
+        map.put('M',1000);
+
+        for (int i = 0; i < s.length(); i++) {
+            int currValue = map.get(s.charAt(i));
+            if (i < s.length()-1 && currValue < map.get(s.charAt(i+1))) ans -= currValue;
+            else ans += currValue;
+        }
+        return ans;
+    }
+    public int mySqrt(int x) {
+        int start = 1, end = x, mid;
+        while (start <= end) {
+            mid = start + (end - start) / 2;
+            if ((long) mid * mid > (long) x) end = mid - 1;
+            else if (mid * mid == x) return mid;
+            else start = mid + 1;
+        }
+        return Math.round(end);
     }
 }
