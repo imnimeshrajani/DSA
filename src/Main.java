@@ -42,7 +42,7 @@ public class Main {
 //        System.out.println("Enter pascal raw size: ");
 //        main.pascal(scanner.nextInt());
 
-        System.out.println("Enter Raw & Column Size: ");
+        /*System.out.println("Enter Raw & Column Size: ");
         int row = scanner.nextInt();
         int column = scanner.nextInt();
 
@@ -58,10 +58,15 @@ public class Main {
         int r1 = scanner.nextInt();
         int c1 = scanner.nextInt();
         int r2 = scanner.nextInt();
-        int c2 = scanner.nextInt();
+        int c2 = scanner.nextInt();*/
 //        main.spiralMatrixPrint(array, row, column);
 //        main.spiralMatrixCreate(row, row);
-        main.getSumWithPrefixSumMatrix(array, c1, c2, r1, r2);
+//        main.getSumWithPrefixSumMatrix(array, c1, c2, r1, r2);
+
+//        int[] nums = Utils.intArrayFromUser();
+//        System.out.println("Enter K Value: ");
+//        main.reverseArrayInGroup(nums, scanner.nextInt());
+        System.out.println(main.convertFive(scanner.nextInt()));
     }
 
     void arraySorting(int[] nums) {
@@ -365,7 +370,7 @@ public class Main {
         getPrefixedMatrixRow(matrix);
         int sum = 0;
         if (leftCol > 0 && topRow > 0) {
-            sum = matrix[bottomRow][rightCol] - matrix[bottomRow][leftCol - 1] - matrix[topRow - 1][rightCol] + matrix[topRow-1][leftCol-1];
+            sum = matrix[bottomRow][rightCol] - matrix[bottomRow][leftCol - 1] - matrix[topRow - 1][rightCol] + matrix[topRow - 1][leftCol - 1];
         } else if (leftCol > 0) {
             sum = matrix[bottomRow][rightCol] - matrix[bottomRow][leftCol - 1];
         } else if (topRow > 0) {
@@ -399,5 +404,31 @@ public class Main {
                 matrix[i][j] = matrix[i][j] + matrix[i - 1][j];
             }
         }
+    }
+
+    void reverseArrayInGroup(int[] nums, int k) {
+        int j = k;
+        for (int i = 0; i < nums.length; i++) {
+            if (i < j) {
+                nums[i] = nums[i] + nums[j];
+                nums[j] = nums[i] - nums[j];
+                nums[i] = nums[i] - nums[j];
+                j--;
+            } else {
+                i = j;
+                j += k;
+                if (j > nums.length - 1) j = nums.length - 1;
+            }
+        }
+        Utils.printArray(nums);
+    }
+
+    int convertFive(int n) {
+        int a = 1, k = 5;
+        while (a<n){
+            if ((n/a)%10 == 0) n+=k*a;
+            a = a*10;
+        }
+        return n;
     }
 }

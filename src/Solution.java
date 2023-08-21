@@ -6,7 +6,7 @@ class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
         Scanner scanner = new Scanner(System.in);
-//        int[] array = Utils.intArrayFromUser();
+        int[] array = Utils.intArrayFromUser();
 //        int[] array2 = Utils.intArrayFromUser();
 //        System.out.println("Enter a Target");
 //        int target = scanner.nextInt();
@@ -20,8 +20,7 @@ class Solution {
 
 //        solution.maxProfit(array);
 //        solution.singleNumber(array);
-//        solution.majorityElement(array);\
-//        System.out.println(solution.containsDuplicate(array));
+//        solution.majorityElement(array);
 //        System.out.println(solution.summaryRanges(array));
 //        System.out.println(solution.missingNumber(array));
 //        solution.moveZeroes(array);
@@ -33,11 +32,34 @@ class Solution {
         /*System.out.println("Enter Romen Number:");
         System.out.println(solution.romanToInt(scanner.next()));*/
 
-        System.out.println("Enter Value: ");
-        System.out.println(solution.mySqrt(scanner.nextInt()));
+//        System.out.println("Enter Value: ");
+//        System.out.println(solution.mySqrt(scanner.nextInt()));
+//        System.out.println(solution.canBeIncreasing(array));
+//        System.out.println(solution.checkIfExist(new int[]{1, 3, 5, 7}));
+
+        System.out.println("Enter Target: ");
+        System.out.println(solution.numSubarrayProductLessThanK(array, scanner.nextInt()));
     }
 
     // TODO: WRITE ALL LEET CODE SOLUTIONS HERE
+    public static boolean containsDuplicate(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            if (map.containsKey(num)) return true;
+            else map.put(num, 1);
+        }
+        return false;
+    }
+
+    public static boolean containsNearbyDuplicate(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i]) && Math.abs(map.get(nums[i]) - i) <= k) return true;
+            else map.put(nums[i], i);
+        }
+        return false;
+    }
+
     public int[] twoSum(int[] nums, int target) {
         int[] arr = new int[2];
         for (int i = 0; i < nums.length; i++) {
@@ -133,27 +155,22 @@ class Solution {
         System.out.println(result);
     }
 
-    public void majorityElement(int[] nums) {
-        Arrays.sort(nums);
-        int n = nums.length;
-        System.out.println(nums[n / 2]);
-    }
-
-    public boolean containsDuplicate(int[] nums) {
-        int i = 0, j = nums.length - 1;
-        while (i < j) {
-            if (nums[i] == nums[j]) {
-                return true;
-            } else if (nums[i] != nums[j] && i != j - 1) {
-                j--;
-            }
-            if (i < nums.length - 1) {
-                i++;
-                j = nums.length - 1;
+    public int majorityElement(int[] nums) {
+        /*int ans = 1, max = Integer.MIN_VALUE;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (!map.containsKey(nums[i])) map.put(nums[i], 1);
+            else {
+                map.put(nums[i], map.get(nums[i])+1);
+                if (map.get(nums[i])>max) {
+                    max = map.get(nums[i]);
+                    ans = nums[i];
+                }
             }
         }
-
-        return false;
+        return ans;*/
+        Arrays.sort(nums);
+        return nums[nums.length / 2];
     }
 
     public List<String> summaryRanges(int[] nums) {
@@ -220,44 +237,43 @@ class Solution {
         int n1 = nums1.length, n2 = nums2.length, i = 0, j = 0, k = 0;
         Arrays.sort(nums1);
         Arrays.sort(nums2);
-        while( i < n1 && j < n2)
-        {
-            if(nums1[i] < nums2[j]) i++;
-            else if(nums1[i] > nums2[j]) j++;
-            else
-            {
+        while (i < n1 && j < n2) {
+            if (nums1[i] < nums2[j]) i++;
+            else if (nums1[i] > nums2[j]) j++;
+            else {
                 nums1[k++] = nums1[i++];
                 j++;
             }
         }
-        return Arrays.copyOfRange(nums1,0,k);
+        return Arrays.copyOfRange(nums1, 0, k);
     }
 
     public boolean isPalindrome(int x) {
         String str = String.valueOf(x);
-        int i = 0, j = str.length()-1;
-        while (i<j) if (str.charAt(i++) != str.charAt(j--)) return false;
+        int i = 0, j = str.length() - 1;
+        while (i < j) if (str.charAt(i++) != str.charAt(j--)) return false;
         return true;
     }
 
     public int romanToInt(String s) {
         int ans = 0;
         HashMap<Character, Integer> map = new HashMap<>();
-        map.put('I',1);
-        map.put('V',5);
-        map.put('X',10);
-        map.put('L',50);
-        map.put('C',100);
-        map.put('D',500);
-        map.put('M',1000);
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
 
         for (int i = 0; i < s.length(); i++) {
             int currValue = map.get(s.charAt(i));
-            if (i < s.length()-1 && currValue < map.get(s.charAt(i+1))) ans -= currValue;
+            if (i < s.length() - 1 && currValue < map.get(s.charAt(i + 1))) ans -= currValue;
             else ans += currValue;
         }
         return ans;
     }
+
     public int mySqrt(int x) {
         int start = 1, end = x, mid;
         while (start <= end) {
@@ -268,4 +284,76 @@ class Solution {
         }
         return Math.round(end);
     }
+
+    public boolean canBeIncreasing(int[] nums) {
+        int j = 0, a = 1;
+        for (int i = 1; i < nums.length - 1; i++) {
+            if (nums[j] < nums[i]) {
+                if (nums[i] < nums[i + 1]) {
+                    j = i;
+                } else {
+                    if (a > 0) {
+                        a--;
+                        i++;
+                    } else return false;
+                }
+            } else {
+                if (a > 0) a--;
+                else return false;
+            }
+        }
+        return true;
+    }
+
+    // 1346
+    public boolean checkIfExist(int[] arr) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.length; i++) {
+            if ((arr[i] % 2 == 0 && map.containsValue(arr[i] / 2)) || map.containsValue(arr[i] * 2)) {
+                return true;
+            } else {
+                map.put(i, arr[i]);
+            }
+        }
+        return false;
+    }
+
+    public int longestSubarray(int[] nums) {
+        int i = 0, j = 0, k = -1, big = Integer.MIN_VALUE, sum = 0;
+        while (i < nums.length && j < nums.length) {
+            if (nums[i] == 0) {
+                i++;
+                j++;
+                sum = 0;
+            } else if (nums[j] == 0) {
+                if (k < 0) k = j++;
+                else {
+                    i = k + 1;
+                    j = i;
+                    k = -1;
+                    if (sum > big) {
+                        big = sum;
+                        sum = 0;
+                    }
+                }
+            } else sum += nums[j++];
+        }
+        if (Math.max(sum, big) == nums.length) return nums.length - 1;
+        return Math.max(sum, big);
+    }
+
+    public int numSubarrayProductLessThanK(int[] nums, int k) {
+        int l = 0, r = 0, ans = 0, prod = 1;
+        while (r < nums.length) {
+            prod *= nums[r];
+            while (prod > k && l <= r) {
+                prod /= nums[l];
+                l++;
+            }
+            ans += (r - l + 1);
+            r++;
+        }
+        return ans;
+    }
+
 }
