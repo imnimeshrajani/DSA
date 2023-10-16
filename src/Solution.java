@@ -6,39 +6,11 @@ class Solution {
     public static void main(String[] args) {
         Solution solution = new Solution();
         Scanner scanner = new Scanner(System.in);
-        int[] array = Utils.intArrayFromUser();
-//        int[] array2 = Utils.intArrayFromUser();
-//        System.out.println("Enter a Target");
-//        int target = scanner.nextInt();
-//        main.printArray(solution.twoSum(array, target));
-//        System.out.println(solution.removeDuplicates(array));
-//        System.out.println("ans:" + solution.searchInsert(array,target));
-//        main.printArray(solution.plusOne(array));
-//        System.out.println("Enter a Sorted array length");
-//        int m = scanner.nextInt();
-//        Utils.printArray(solution.merge(array, m, array2, array2.length));
-
-//        solution.maxProfit(array);
-//        solution.singleNumber(array);
-//        solution.majorityElement(array);
-//        System.out.println(solution.summaryRanges(array));
-//        System.out.println(solution.missingNumber(array));
-//        solution.moveZeroes(array);
-        /*NumArray numArray = new NumArray(array);
-        System.out.println("Enter Range:");
-        System.out.println(numArray.sumRange(scanner.nextInt(), scanner.nextInt()));*/
-
-//        Utils.printArray(solution.intersect(array,array2));
-        /*System.out.println("Enter Romen Number:");
-        System.out.println(solution.romanToInt(scanner.next()));*/
-
-//        System.out.println("Enter Value: ");
-//        System.out.println(solution.mySqrt(scanner.nextInt()));
-//        System.out.println(solution.canBeIncreasing(array));
-//        System.out.println(solution.checkIfExist(new int[]{1, 3, 5, 7}));
-
-        System.out.println("Enter Target: ");
-        System.out.println(solution.numSubarrayProductLessThanK(array, scanner.nextInt()));
+//        int[] array = Utils.intArrayFromUser();
+//        System.out.println("Enter Your Target");
+        int[] nums1 = {4,1,2};
+        int[] nums2 = {1,3,4,2};
+        solution.intersection(nums1,nums2);
     }
 
     // TODO: WRITE ALL LEET CODE SOLUTIONS HERE
@@ -58,6 +30,17 @@ class Solution {
             else map.put(nums[i], i);
         }
         return false;
+    }
+
+    public static double myPow(double x, int n) {
+        if (x == 1 || x == -1) return x;
+        if (n == Integer.MIN_VALUE || n == Integer.MAX_VALUE) return 0.000000;
+        if (n < 0) {
+            if (n == -1) return 1;
+            return 1 / x * myPow(x, n + 1);
+
+        } else if (n == 0) return 1;
+        return x * myPow(x, n - 1);
     }
 
     public int[] twoSum(int[] nums, int target) {
@@ -182,12 +165,12 @@ class Solution {
             if (nums[i + 1] - nums[i] != 1) {
                 if (index != i) {
                     list.add(nums[index] + "->" + nums[i]);
-                } else list.add("" + nums[index]);
+                } else list.add(String.valueOf(nums[index]));
                 index = i + 1;
             }
         }
         if (index == nums.length - 1) {
-            list.add("" + nums[index]);
+            list.add(String.valueOf(nums[index]));
         } else {
             {
                 list.add(nums[index] + "->" + nums[nums.length - 1]);
@@ -353,6 +336,167 @@ class Solution {
             ans += (r - l + 1);
             r++;
         }
+        return ans;
+    }
+
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int i = 0;
+        for (int j = 0; i < g.length && j < s.length; j++) {
+            if (g[i] <= s[j]) i++;
+        }
+        return i;
+    }
+
+    public int islandPerimeter(int[][] grid) {
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 1) {
+                    if (i - 1 < 0) count++;
+                    if (i + 1 == grid.length) count++;
+                    if (i - 1 >= 0 && grid[i - 1][j] == 0) count++;
+                    if (i + 1 < grid.length && grid[i + 1][j] == 0) count++;
+
+                    if (j - 1 < 0) count++;
+                    if (j + 1 == grid[i].length) count++;
+                    if (j - 1 >= 0 && grid[i][j - 1] == 0) count++;
+                    if (j + 1 < grid[i].length && grid[i][j + 1] == 0) count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public int findMaxConsecutiveOnes(int[] nums) {
+        int big = Integer.MIN_VALUE, sum = 0;
+        for (int num : nums) {
+            sum += num;
+            if (big < sum) big = sum;
+            if (num == 0) sum = 0;
+        }
+        return big;
+    }
+
+    public int lengthOfLongestSubstring(String s) {
+        int i = 0, big = Integer.MIN_VALUE;
+        StringBuilder str = new StringBuilder(String.valueOf(s.charAt(0)));
+        while (i < s.length()) {
+            if (!str.toString().contains(String.valueOf(s.charAt(i)))) {
+                str.append(s.charAt(i));
+                i++;
+            } else str.deleteCharAt(0);
+            if (big < str.length()) big = str.length();
+        }
+        return big;
+    }
+
+    public int search(int[] nums, int target) {
+        int pivot = pivot(nums);
+        if (nums[nums.length - 1] < target) return partSearch(nums, 0, pivot, target);
+        else return partSearch(nums, pivot, nums.length - 1, target);
+    }
+
+    int pivot(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > nums[nums.length - 1]) left = mid + 1;
+            else right = mid - 1;
+        }
+        return left;
+    }
+
+    int partSearch(int[] nums, int left, int right, int target) {
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[left] == target) return left;
+            if (nums[mid] == target) return mid;
+            if (nums[right] == target) return right;
+            else if (nums[left] < target) left = mid + 1;
+            else if (nums[right] > target) right = mid - 1;
+        }
+        return -1;
+    }
+
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int sum = 0;
+        for (int i = 0; i < timeSeries.length; i++) {
+            if (i < timeSeries.length - 1 && timeSeries[i + 1] < timeSeries[i] + duration)
+                sum -= (timeSeries[i] + duration) - timeSeries[i + 1];
+            sum += duration;
+        }
+        return sum;
+    }
+
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        int i = 0, j = 0;
+        while (i<nums1.length){
+            if (nums1[i] == nums2[j]){
+                for (int k = j; k < nums2.length-1; k++) {
+                    if (nums2[k]<nums2[k+1]) {
+                        nums1[i] = nums2[k];
+                        break;
+                    } else {
+                        nums1[i] = -1;
+                    }
+                }
+                if (j < nums2.length-1) j++;
+            } else if (j < nums2.length-1) j++;
+            else{
+                i++;
+                j = i;
+            }
+        }
+        return nums1;
+    }
+
+    public int[] countBits(int n) {
+        int[] arr = new int[n+1];
+        for (int i = 0; i <= n; i++) {
+            int val = 0;
+            String binary = Integer.toBinaryString(i);
+            for (int j = 0; j < binary.length(); j++) if (binary.charAt(j) == '1') val++;
+            arr[i] = val;
+        }
+        return arr;
+    }
+
+    public int addDigits(int num) {
+        if (num == 0) return 0;
+        return (num % 9 == 0) ? 9 : (num % 9);
+    }
+
+    public String[] findWords(String[] words) {
+        String[] ans = new String[words.length];
+        int k =0;
+        String top = "qwertyuiop", mid = "asdfghjkl", last = "zxcvbnm";
+        for (int i = 0; i < words.length; i++) {
+            String searchRow = last;
+            if (top.contains(""+words[i].toLowerCase().charAt(0)))searchRow = top;
+            else if (mid.contains(""+words[i].toLowerCase().charAt(0))) searchRow = mid;
+            System.out.println(words[i].toLowerCase().charAt(0));
+            int j = 0;
+            while ( j < words[i].length()) {
+                if (searchRow.contains(""+words[i].charAt(j))){
+                    j++;
+                    if (j == words[i].length()) {
+                        ans[k] = words[i];
+                        k++;
+                    }
+                } else break;
+            }
+        }
+        return ans;
+    }
+
+    public int[] intersection(int[] nums1, int[] nums2) {
+        ArrayList<Integer> set1 = new ArrayList<>(), set2 = new ArrayList<>();
+        for (int i : nums1) set1.add(i);
+        for (int i : nums2) if (set1.contains(i))set2.add(i);
+        int ans[] = new int[set2.size()], index = 0;
+        for (Integer integer : set2) ans[index++] = integer;
         return ans;
     }
 
